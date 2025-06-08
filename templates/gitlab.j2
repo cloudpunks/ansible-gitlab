@@ -26,7 +26,14 @@ letsencrypt['auto_renew_day_of_month'] = "{{ gitlab_letsencrypt_auto_renew_day_o
 letsencrypt['auto_renew'] = {{ gitlab_letsencrypt_auto_renew | lower }}
 {% endif %}
 
-git_data_dirs({"default" => {"path" => "{{ gitlab_git_data_dir }}"} })
+gitaly['configuration'] = {
+    storage: [
+      {
+         name: 'default',
+         path: '{{ gitlab_git_data_dir }}/repositories',
+      },
+    ],
+}
 
 gitlab_rails['backup_path'] = "{{ gitlab_backup_path }}"
 {% if gitlab_backup_upload_location | default(False) %}
